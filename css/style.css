@@ -1,0 +1,12 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'DM Sans', serif;
+}
+
+.hidden {
+  display: none;
+}/*# sourceMappingURL=style.css.map */
