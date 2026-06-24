@@ -103,57 +103,35 @@ class App {
   }
   
   _render() {
-    document.querySelector('#meal-form').addEventListener('submit', this._newMeal.bind(this));
-    document.querySelector('#workout-form').addEventListener('submit', this._newWorkout.bind(this));
+    document.querySelector('#meal-form').addEventListener('submit', this._newItem.bind(this, 'meal'));
+    document.querySelector('#workout-form').addEventListener('submit', this._newItem.bind(this, 'workout'));
   }
-  _newMeal(e) { 
+  _newItem(type, e) {
     e.preventDefault();
-
-    let name = document.querySelector('#meal-name');
-    let calories = document.querySelector('#meal-calories');
-    // let calories = Number(document.querySelector('#meal-calories').value); // or
-    // const meal = new Meal(name, +calories); // Line 188 to comnvert to Number
+    let name = document.querySelector(`#${type}-name`);
+    let calories = document.querySelector(`#${type}-calories`);
 
     if (name.value === '' || calories.value === '') {
       alert('Please enter values in all fields');
       return;
     }
-    const meal = new Meal(name.value, +calories.value);
-    this._tracker.addMeal(meal);
-    
-    name.value = '';
-    calories.value = '';
 
-    const collapseMeal = document.querySelector('#collapse-meal');
-    const bsCollapse = new bootstrap.Collapse(collapseMeal, {
-      toggle: true,
-    });
-    console.log(this);
-  }
-
-  _newWorkout(e) { 
-    e.preventDefault();
-
-    let name = document.querySelector('#workout-name');
-    let calories = document.querySelector('#workout-calories');
-    // let calories = Number(document.querySelector('#workout-calories').value); // or
-    // const meal = new Meal(name, +calories); // Line 188 to comnvert to Number
-
-    if (name.value === '' || calories.value === '') {
-      alert('Please enter values in all fields');
-      return;
+    if (type === 'meal') {
+      const meal = new Meal(name.value, +calories.value);
+      this._tracker.addMeal(meal);
     }
-    const workout = new Workout(name.value, +calories.value);
-    this._tracker.addWorkout(workout);
-    
+    if(type === 'workout') {
+      const workout = new Workout(name.value, +calories.value);
+      this._tracker.addWorkout(workout);
+    }
+
     name.value = '';
     calories.value = '';
 
-    const collapseWorkout = document.querySelector('#collapse-workout');
-    const bsCollapse = new bootstrap.Collapse(collapseWorkout, {
+    const collapseItem = document.querySelector(`#collapse-${type}`);
+    const bsCollapse = new bootstrap.Collapse(collapseItem, {
       toggle: true,
     });
-    console.log(this);
   }
 }
 
