@@ -118,25 +118,25 @@ class CalorieTracker {
     mealEl.classList.add("card", "my-2");
     mealEl.setAttribute("data-id", `${meal.id}`);
     mealEl.innerHTML = `
-    <div class="card-body">
-    <div class="d-flex align-items-center justify-content-between">
-    <h4 class="mx-1">${meal.name}</h4>
-    <div class="fs-1 bg-primary text-white text-center rounded-2 px-2 px-sm-5">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+          <h4 class="mx-1">${meal.name}</h4>
+          <div class="fs-1 bg-primary text-white text-center rounded-2 px-2 px-sm-5">
             ${meal.calories}
           </div>
           <button class="delete btn btn-danger btn-sm mx-2">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        </div>`;
-        
-        mealsEl.appendChild(mealEl);
-      }
-      _displayNewWorkout(workout) {
-        const workoutsEl = document.querySelector("#workout-items");
-        const workoutEl = document.createElement("div");
-        workoutEl.classList.add("card", "my-2");
-        workoutEl.setAttribute("data-id", `${workout.id}`);
+      </div>`;
+
+    mealsEl.appendChild(mealEl);
+  }
+  _displayNewWorkout(workout) {
+    const workoutsEl = document.querySelector("#workout-items");
+    const workoutEl = document.createElement("div");
+    workoutEl.classList.add("card", "my-2");
+    workoutEl.setAttribute("data-id", `${workout.id}`);
     workoutEl.innerHTML = `
       <div class="card-body">
         <div class="d-flex align-items-center justify-content-between">
@@ -189,6 +189,8 @@ class App {
     document
       .querySelector("#workout-items")
       .addEventListener("click", this._removeItem.bind(this, "workout"));
+    document.querySelector('#filter-meals').addEventListener('keyup', this._filterItems.bind(this, 'meal'));
+    document.querySelector('#filter-workouts').addEventListener('keyup', this._filterItems.bind(this, 'workout'));
   }
   _newItem(type, e) {
     e.preventDefault();
@@ -232,6 +234,13 @@ class App {
         item.remove();
       }
     }
+  }
+  _filterItems(type, e) {
+    const text = e.target.value.toLowerCase();
+    document.querySelectorAll(`#${type}-items .card`).forEach((item) => {
+      const name = item.firstElementChild.firstElementChild.textContent;
+      name.toLowerCase().indexOf(text) !== -1 ? item.style.display = 'block' : item.style.display = 'none';
+    });
   }
 }
 
