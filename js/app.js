@@ -21,6 +21,24 @@ class CalorieTracker {
     this._displayNewWorkout(workout);
     this._render();
   }
+  removeMeal(id) {
+    const index = this._meals.findIndex((meal) => meal.id === id);
+    if (index !== -1) {
+      const meal = this._meals[index];
+      this._meals.splice(index, 1);
+      this._totalCalories -= meal.calories;
+      this._render();
+    }
+  }
+  removeWorkout(id) {
+    const index = this._workouts.findIndex((workout) => workout.id === id);
+    if (index !== -1) {
+      const workout = this._workouts[index];
+      this._workouts.splice(workout, 1);
+      this._totalCalories += workout.calories;
+      this._render();
+    }
+  }
 
   // PRIVATE METHODS
   _render() {
@@ -98,25 +116,27 @@ class CalorieTracker {
     const mealsEl = document.querySelector("#meal-items");
     const mealEl = document.createElement("div");
     mealEl.classList.add("card", "my-2");
+    mealEl.setAttribute("data-id", `${meal.id}`);
     mealEl.innerHTML = `
-      <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <h4 class="mx-1">${meal.name}</h4>
-          <div class="fs-1 bg-primary text-white text-center rounded-2 px-2 px-sm-5">
+    <div class="card-body">
+    <div class="d-flex align-items-center justify-content-between">
+    <h4 class="mx-1">${meal.name}</h4>
+    <div class="fs-1 bg-primary text-white text-center rounded-2 px-2 px-sm-5">
             ${meal.calories}
           </div>
           <button class="delete btn btn-danger btn-sm mx-2">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-      </div>`;
-    
-      mealsEl.appendChild(mealEl);
-  }
-  _displayNewWorkout(workout) {
-    const workoutsEl = document.querySelector("#workout-items");
-    const workoutEl = document.createElement("div");
-    workoutEl.classList.add("card", "my-2");
+        </div>`;
+        
+        mealsEl.appendChild(mealEl);
+      }
+      _displayNewWorkout(workout) {
+        const workoutsEl = document.querySelector("#workout-items");
+        const workoutEl = document.createElement("div");
+        workoutEl.classList.add("card", "my-2");
+        workoutEl.setAttribute("data-id", `${workout.id}`);
     workoutEl.innerHTML = `
       <div class="card-body">
         <div class="d-flex align-items-center justify-content-between">
@@ -129,7 +149,7 @@ class CalorieTracker {
           </button>
         </div>
       </div>`;
-    
+
     workoutsEl.appendChild(workoutEl);
   }
 }
@@ -163,6 +183,12 @@ class App {
     document
       .querySelector("#workout-form")
       .addEventListener("submit", this._newItem.bind(this, "workout"));
+    document
+      .querySelector("#meal-items")
+      .addEventListener("click", this._removeItem.bind(this, "meal"));
+    document
+      .querySelector("#workout-items")
+      .addEventListener("click", this._removeItem.bind(this, "workout"));
   }
   _newItem(type, e) {
     e.preventDefault();
@@ -190,6 +216,23 @@ class App {
     const bsCollapse = new bootstrap.Collapse(collapseItem, {
       toggle: true,
     });
+  }
+  _removeItem(type, e) {
+    if (
+      e.target.classList.contains("delete") ||
+      e.target.classList.contains("fa-xmark")
+    ) {
+      if (confirm("Are you sure?")) {
+        const item = e.target.closest(".card");
+        const id = item.getAttribute("data-id");
+        // console.log(id);
+        type === "meal"
+          ? this._tracker.removeMeal(id)
+          : this._tracker.removeWorkout(id);
+
+        item.remove();
+      }
+    }
   }
 }
 
