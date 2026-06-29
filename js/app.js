@@ -6,6 +6,7 @@ class CalorieTracker {
     this._workouts = Storage.getWorkouts();
 
     document.addEventListener("DOMContentLoaded", this._render.bind(this));
+    document.querySelector('#limit').value = this._calorieLimit;
   }
 
   // PUBLIC METHODS/API
