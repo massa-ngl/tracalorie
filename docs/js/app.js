@@ -151,7 +151,7 @@ class CalorieTracker {
             ${meal.calories}
           </div>
           <button class="delete btn btn-danger btn-sm mx-2">
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-x"></i>
           </button>
         </div>
       </div>`;
@@ -171,7 +171,7 @@ class CalorieTracker {
             ${workout.calories}
           </div>
           <button class="delete btn btn-danger btn-sm mx-2">
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-x"></i>
           </button>
         </div>
       </div>`;
@@ -346,7 +346,7 @@ class App {
   _removeItem(type, e) {
     if (
       e.target.classList.contains("delete") ||
-      e.target.classList.contains("fa-xmark")
+      e.target.classList.contains("fa-x")
     ) {
       if (confirm("Are you sure?")) {
         const item = e.target.closest(".card");
