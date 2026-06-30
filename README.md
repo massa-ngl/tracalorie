@@ -2,7 +2,7 @@
 
 A calorie tracking app built with **Vanilla JavaScript**. Log meals and workouts, track your daily calorie balance, and persist data across sessions — all without a framework.
 
-![Tracalorie Screenshot](./images/screenshots/screen.png)
+![Tracalorie Screenshot](docs/images/screenshots/screen.png)
 
 ---
 
